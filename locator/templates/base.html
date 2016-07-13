@@ -5,7 +5,11 @@
 <head>
     <title>Pokemon Map</title>
     <meta name="viewport" content="initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
     <meta charset="utf-8">
     <style>
         html,
@@ -18,31 +22,16 @@
         #map {
             height: 100%;
         }
-
-        nav {
-            position: fixed;
-            z-index: 2;
-            background-color: white;
-        }
-
-        nav> button {
-            display: inline;
-            text-align: right;
-        }
     </style>
 </head>
 
 <body>
-    <nav>
-        <button class="btn" type="button" name="button">Info</button>
-        <button class="btn" type="button" name="button">Add Pokemon</button>
-    </nav>
     <div id="map"></div>
 
     <!-- Javascript -->
     <script src="{% static 'locator/js/initialize_map.js' %}"></script>
-    <script src="{% static 'locator/js/add_pokemon.js' %}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBg5UkNFYI4-1C2GJZVa_qLRlImdOjJ3ag&callback=initMap" async defer></script>
+    <!-- <script src="{% static 'locator/js/add_pokemon.js' %}"></script> -->
 </body>
 
 </html>
