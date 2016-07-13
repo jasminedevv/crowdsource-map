@@ -5,7 +5,7 @@
 <head>
     <title>Pokemon Map</title>
     <meta name="viewport" content="initial-scale=1.0">
-    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -22,16 +22,93 @@
         #map {
             height: 100%;
         }
+        .side-frame {
+          position: fixed;
+          width: 200px;
+          left: 0;
+          top: 20vh;
+          z-index: 2;
+          background-color: white;
+        }
     </style>
 </head>
 
 <body>
     <div id="map"></div>
 
+    <!-- <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+        </ul>
+    </div>
+    </div> -->
+<form class="side-frame">
+  {% csrf_token %}
+  <h4>Select pokemon to add to map</h4>
+  <div class="pokeselect" scrolling="yes">
+    {% for pokemon in pokedex %}
+      <input type="radio" name="pokemon" value="{{pokemon.name}}"> {{pokemon.name}}<br>
+    {% endfor %}
+  </div>
+  <br><p>
+    Double click on the map to add coordinates
+  </p><input id="new-pokemon-coords" type="text-field" name="name" value="">
+  <button id="add-btn" type="submit" name="button">Submit</button>
+</form>
+
+
     <!-- Javascript -->
+
     <script src="{% static 'locator/js/initialize_map.js' %}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBg5UkNFYI4-1C2GJZVa_qLRlImdOjJ3ag&callback=initMap" async defer></script>
-    <!-- <script src="{% static 'locator/js/add_pokemon.js' %}"></script> -->
+    <script src="{% static 'locator/js/add_pokemon.js' %}"></script>
+
+    <script type="text/javascript">
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+        $(".side-frame").submit(function(e) {
+            e.preventDefault();
+            latLng = $('#new-pokemon-coords').val().split(',');
+            latitude = latLng[0];
+            longitude = latLng[1];
+            selected_pokemon = $('input[name=pokemon]:checked').val();
+
+            addPokemon(selected_pokemon, latitude, longitude);
+        });
+
+    </script>
 </body>
 
 </html>
