@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from locator.views import mainPage, addMapPoint, getAllMarkers
+from locator.views import mapPage, addMapPoint, getAllMarkers
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^add-pokemon/', addMapPoint),
     url(r'^all-markers/', getAllMarkers),
-    url(r'^$', mainPage),
+    url(r'^map', mapPage),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # url(r'^api-view/', include('api_view.urls')),
 ]

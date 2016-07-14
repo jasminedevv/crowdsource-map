@@ -3,9 +3,9 @@ from models import Pokemon, MapPoint
 from django.http import HttpResponse
 
 # Create your views here.
-def mainPage(request):
+def mapPage(request):
     pokedex = Pokemon.objects.all()
-    response = render(request, "base.html", {'pokedex': pokedex})
+    response = render(request, "map.html", {'pokedex': pokedex})
     return response
 
 def addMapPoint(request):

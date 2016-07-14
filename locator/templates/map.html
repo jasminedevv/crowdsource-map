@@ -52,7 +52,7 @@
         <h4>Select pokemon to add to map</h4>
         <div class="pokeselect" scrolling="yes">
             {% for pokemon in pokedex %}
-            <input type="radio" name="pokemon" value="{{pokemon.name}}"> {{pokemon.name}}
+            <input type="radio" name="pokemon" value="{{pokemon.name}}"> {{pokemon.name}} <img src="media/{{ pokemon.image }}" alt="" />
             <br> {% endfor %}
         </div>
         <br>
