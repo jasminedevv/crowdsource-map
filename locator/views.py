@@ -21,3 +21,8 @@ def addMapPoint(request):
     else:
         status= "FAIL"
         return HttpResponse(status)
+
+def getAllMarkers(request):
+    markers = MapPoint.objects.all()
+    response = render(request, "markers.json", {'markers': markers})
+    return response

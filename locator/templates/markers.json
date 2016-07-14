@@ -1,0 +1,13 @@
+[
+  {% for marker in markers %}
+  {% if not forloop.first %},{% endif %}
+  {
+    "id": {{ marker.id }},
+    "name": "{{ marker.pokemon.name }}",
+    "icon": "{{ marker.pokemon.image }}",
+    "author": "{{ marker.added_by.username }}",
+    "lon": {{ marker.lat }},
+    "lat": {{ marker.lon }}
+}
+  {% endfor %}
+]

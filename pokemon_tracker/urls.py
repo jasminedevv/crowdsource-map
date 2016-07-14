@@ -16,12 +16,20 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from locator.views import mainPage, addMapPoint
+from locator.views import mainPage, addMapPoint, getAllMarkers
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^add-pokemon/', addMapPoint),
+    url(r'^all-markers/', getAllMarkers),
     url(r'^$', mainPage),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # url(r'^api-view/', include('api_view.urls')),
 ]
+
+if settings.DEBUG is True:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
