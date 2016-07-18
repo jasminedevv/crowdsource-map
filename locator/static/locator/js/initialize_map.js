@@ -43,14 +43,13 @@ function initMarkers() {
     xhrObject.onreadystatechange = function() {
         if (xhrObject.readyState === 4) {
             if (xhrObject.status === 200 || xhrObject.status === 304) {
+                console.log(xhrObject.responseText);
                 locations = JSON.parse(xhrObject.responseText);
-                // var markerLocations = [];
                 var marker, i;
 
                 var infowindow = new google.maps.InfoWindow;
                 for (i = 0; i < locations.length; i++) {
                     var obj = locations[i];
-                    console.log(obj);
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(obj.lon, obj.lat),
                         map: map,
@@ -66,20 +65,6 @@ function initMarkers() {
                         }
                     })(marker, i));
                 }
-                /*for (var i = 0; i < markers_json.length; i++) {
-                    var obj = markers_json[i];
-                    console.log(obj.name, obj.icon, obj.lat, obj.lon);
-                    var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(obj.lat, obj.lon),
-                        map: map,
-                        draggable: false,
-                        name: obj.name,
-                        icon: "media/" + obj.icon,
-                    });
-
-                    // markerLocations = markerLocations + marker;
-                }*/
-                // markerLocations.push(marker);
             }
         }
     };
@@ -90,15 +75,3 @@ function initMarkers() {
     );
     xhrObject.send();
 }
-// for (var i = 0; i < markers_json.length; i++) {
-//     var obj = markers_json[i];
-//     console.log(obj.name, obj.icon, obj.lat, obj.lon);
-//     var marker = new google.maps.Marker({
-//         position: new google.maps.LatLng(obj.lat, obj.lon),
-//         map: map,
-//         draggable: false,
-//         name: obj.name,
-//         icon: "media/" + obj.icon,
-//     });
-// }
-// markerLocations.push(marker);

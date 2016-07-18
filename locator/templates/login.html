@@ -1,0 +1,109 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <meta charset="utf-8">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 20vh;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
+            <li><a data-toggle="tab" href="#create-account">Make an account</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="login" class="tab-pane fade in active">
+                <h3>Login</h3>
+                <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <td>{{ form.username.label_tag }}</td>
+                            <td>{{ form.username }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.password.label_tag }}</td>
+                            <td>{{ form.password }}</td>
+                        </tr>
+                    </table>
+
+                    <input type="submit" value="login" />
+                    <input type="hidden" name="next" value="/map" />
+                </form>
+                <!-- <form class="user-form" action="{% url 'django.contrib.auth.views.login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Email:</span>
+                        <input name="email" type="email" class="form-control" aria-describedby="basic-addon1">
+                    </div><br>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon2">Username:</span>
+                        <input name="username" type="text" class="form-control" aria-describedby="basic-addon2">
+                    </div><br>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon3">Password:</span>
+                        <input name="password" type="password" class="form-control" content='fakepassword' aria-describedby="basic-addon3">
+                    </div><br>
+                    <button class='btn btn-primary' type="submit" name="button">Login</button>
+                </form> -->
+            </div>
+            <div id="create-account" class="tab-pane fade">
+                <h3>Make an account</h3>
+                <p>
+                  Coming soon! (you can't make an account yet)
+                </p>
+                <form class="user-form" action="create/" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Email:</span>
+                        <input name="email" type="email" class="form-control" aria-describedby="basic-addon1">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon2">Username:</span>
+                        <input name="username" type="text" class="form-control" aria-describedby="basic-addon2">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon3">Password:</span>
+                        <input name="email" type="email" class="form-control" aria-describedby="basic-addon3">
+                    </div>
+                    <br>
+                    <button class='btn btn-primary' type="submit" name="button">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+</html>

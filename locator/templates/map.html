@@ -7,6 +7,7 @@
     <meta name="viewport" content="initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -37,16 +38,6 @@
 <body>
     <div id="map"></div>
 
-    <!-- <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-            <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-            <li><a href="#">HTML</a></li>
-            <li><a href="#">CSS</a></li>
-            <li><a href="#">JavaScript</a></li>
-        </ul>
-    </div>
-    </div> -->
     <form class="side-frame">
         {% csrf_token %}
         <h4>Select pokemon to add to map</h4>
@@ -66,7 +57,6 @@
 
     <!-- Javascript -->
     <script type="text/javascript">
-
     </script>
 
     <script src="{% static 'locator/js/initialize_map.js' %}"></script>
@@ -74,7 +64,8 @@
     <script src="{% static 'locator/js/add_pokemon.js' %}"></script>
 
     <script type="text/javascript">
-    initMarkers();
+        initMarkers();
+
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
