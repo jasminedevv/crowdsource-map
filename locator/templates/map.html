@@ -9,54 +9,59 @@
 
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'locator/css/map.css' %}">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{% static 'locator/js/list.min.js' %}"></script>
+    <script src="{% static 'locator/js/list.fuzzysearch.min.js' %}"></script>
 
     <meta charset="utf-8">
-    <style>
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            height: 100%;
-        }
-
-        .side-frame {
-            position: fixed;
-            width: 200px;
-            left: 0;
-            top: 20vh;
-            z-index: 2;
-            background-color: white;
-        }
-    </style>
 </head>
 
 <body>
     <div id="map"></div>
 
-    <form class="side-frame">
+    <div class="side-menu">
         {% csrf_token %}
         <h4>Select pokemon to add to map</h4>
-        <div class="pokeselect" scrolling="yes">
+        <input class="search form-control" placeholder="Search" />
+<form class="side-frame">
+        <ul class="pokeselect list">
             {% for pokemon in pokedex %}
-            <input type="radio" name="pokemon" value="{{pokemon.name}}"> {{pokemon.name}} <img src="media/{{ pokemon.image }}" alt="" />
-            <br> {% endfor %}
-        </div>
+            <li>
+                <label data-sort="name" for="option{{ forloop.counter }}" class="pokeoption {{pokemon.name}}">
+                    <input id="option{{ forloop.counter }}" required=true type="radio" name="pokemon" value="{{pokemon.name}}">
+                    {{pokemon.name}}
+                    <img class="{{pokemon.name}}" src="media/{{ pokemon.image }}" alt="" />
+                </label>
+              </li>
+            {% endfor %}
+        </ul>
         <br>
         <p>
             Double click on the map to add coordinates
         </p>
-        <input id="new-pokemon-coords" type="text-field" name="name" value="">
-        <button id="add-btn" type="submit" name="button">Submit</button>
-    </form>
-
+        <input class="form-control" required=true id="new-pokemon-coords" type="text-field" name="name" value="">
+        <br>
+        <button class="btn btn-primary" id="add-btn" type="submit" name="button">Submit</button>
+      </form>
+    </div>
+    <div id="post-error" class="error-bar alert alert-danger">
+        <p>Something went wrong. Try refreshing the page and trying again. If that doesn't work, there is probably a problem with the server.</p>
+    </div>
 
     <!-- Javascript -->
     <script type="text/javascript">
+        //alerts
+        $('.alert').hide();
+        $('.alert').on('click', function() {
+            $('.alert').hide();
+        });
+        var options = {
+  valueNames: [ 'pokemon' ]
+};
+
+var userList = new List('side-menu', options);
+
     </script>
 
     <script src="{% static 'locator/js/initialize_map.js' %}"></script>
@@ -64,7 +69,45 @@
     <script src="{% static 'locator/js/add_pokemon.js' %}"></script>
 
     <script type="text/javascript">
-        initMarkers();
+        // initialize markers
+        $.ajax({
+                url: "all-markers",
+                type: "GET",
+                dataType: "json",
+            })
+            .done(function(json) {
+                console.log(json);
+                locations = json;
+                var marker, i;
+                //console.log('various errors sometimes show up here and I have no idea why');
+                var infowindow = new google.maps.InfoWindow;
+                for (i = 0; i < locations.length; i++) {
+                    var obj = locations[i];
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(obj.lon, obj.lat),
+                        map: map,
+                        draggable: false,
+                        name: obj.name,
+                        icon: "media/" + obj.icon,
+                    });
+
+                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                        return function() {
+                            infowindow.setContent(locations[i][0]);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, i));
+                }
+            })
+            .fail(function(xhr, status, errorThrown) {
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+                console.dir(xhr);
+            })
+            // Code to run regardless of success or failure;
+            .always(function(xhr, status) {
+                console.log("The request is complete!");
+            });
 
         function getCookie(name) {
             var cookieValue = null;
@@ -101,8 +144,19 @@
             latitude = latLng[0];
             longitude = latLng[1];
             selected_pokemon = $('input[name=pokemon]:checked').val();
-
-            addPokemon(selected_pokemon, latitude, longitude);
+            var success = false;
+            if (selected_pokemon != null && latitude != null && longitude != null) {
+                success = addPokemon(selected_pokemon, latitude, longitude);
+            }
+            if (success) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(latitude, longitude),
+                    map: map,
+                    draggable: false,
+                    name: selected_pokemon,
+                    icon: $('.' + selected_pokemon).attr('src'),
+                });
+            }
         });
     </script>
 </body>

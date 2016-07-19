@@ -36,9 +36,13 @@ function initMap() {
     }
 }
 
+
+/*
 function initMarkers() {
     var markers_json;
-    // get the json file with all the markers in it
+
+    // get the json file with all the markers in it.old
+
     var xhrObject = new XMLHttpRequest();
     xhrObject.onreadystatechange = function() {
         if (xhrObject.readyState === 4) {
@@ -59,7 +63,7 @@ function initMarkers() {
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                         return function() {
-                            infowindow.setContent(/*locations[i][0]*/obj.name);
+                            infowindow.setContent(locations[i][0]);
                             infowindow.open(map, marker);
                         }
                     })(marker, i));
@@ -74,3 +78,4 @@ function initMarkers() {
     );
     xhrObject.send();
 }
+*/

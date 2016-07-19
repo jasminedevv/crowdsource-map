@@ -1,11 +1,13 @@
 var addPokemon = function(pokemon_name, latitude, longitude) {
-    console.log(latitude);
     var dataString = 'name=' + pokemon_name + '&latitude=' + latitude + '&longitude=' + longitude;
-    console.log(dataString);
+    var succeed = false;
     $.ajax({
         type: "POST",
         url: "add-pokemon/",
         data: dataString,
-        success: console.log(pokemon_name + " added"),
+        success: succeed = true,
+        failure: $('#post-error').show(),
     });
+    console.log(dataString)
+    return succeed;
 }

@@ -1,0 +1,45 @@
+html, body {
+    background-color: #349;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#map {
+    height: 100%;
+}
+
+/* pokemon scrollbox */
+.pokeselect {
+    max-height: 200px;
+    overflow: scroll;
+    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.5);
+    margin: 0;
+}
+.pokeoption {
+    margin: 0;
+    padding-left: 10px;
+    cursor: pointer;
+    display: block;
+    z-index: -1;
+}
+.pokeoption:hover {
+    background-color: rgba(0, 155, 0, 0.2);;
+}
+/* end scrollbox */
+
+.side-menu {
+    position: fixed;
+    width: 300px;
+    left: 0;
+    top: 20vh;
+    z-index: 2;
+    background-color: white;
+    padding: 20px;
+}
+.error-bar {
+    transitions: 0.2s;
+    margin: 0 auto;
+    z-index: 4;
+    position: fixed;
+    top: 0;
+}
