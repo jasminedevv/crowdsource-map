@@ -26,16 +26,19 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^add-pokemon/', addMapPoint),
-    url(r'^all-markers/', getAllMarkers),
+    url(r'^add-pokemon/', add_map_point),
+    url(r'^all-markers/', get_all_markers),
+
+    url(r'^pokepoint/(?P<point_id>\d+)/', pokepoint_detail),
+
     url(r'^login/', 'django.contrib.auth.views.login', {
     'template_name': 'login.html'
 }),
-    url(r'^login/submit/', loginSubmit),
-    url(r'^register$', register, name='register'),
+    url(r'^login/submit/', login_submit),
+    # url(r'^register$', register, name='register'),
     # url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     # url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
-    url(r'^map', mapPage)
+    url(r'^map', map_page)
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # url(r'^api-view/', include('api_view.urls')),
 ]

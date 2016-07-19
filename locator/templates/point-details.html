@@ -1,0 +1,43 @@
+
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% block head %}
+{{ block.super }}
+  <title>Error</title>
+
+  <style>
+      html,
+      body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+      }
+
+      .card {
+          max-width: 500px;
+          margin: 0 auto;
+          text-align: center;
+          margin-top: 20vh;
+      }
+  </style>
+  {% endblock %}
+
+  {% block content %}
+<div class="container">
+  {% if not pokepoint %}
+  <br><br><br>
+  <h1 class='red'>Oh no!</h1>
+  <p>
+    I don't know where that map point went. It probably never existed.
+  </p>
+  {% else %}
+  <h1>Details</h1>
+      <h4>Pokemon: {{ pokepoint.pokemon.name }} <img src="/media/{{ pokepoint.pokemon.image }}" alt="" /></h4>
+      <h4>Author: {{ pokepoint.added_by }}</h4>
+      <h4>Found: {{ pokepoint.found }} times</h4>
+      <h4>Seen: {{ pokepoint.seen }} time</h4>
+      <h4>Nowhere in sight: {{ pokepoint_nope }}</h4>
+  {% endif %}
+</div>
+
+  {% endblock %}

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # from oauth2client.contrib.django_orm import FlowField, CredentialsField
 
@@ -39,7 +40,13 @@ class MapPoint(models.Model):
     lat = models.FloatField(blank=True, null=True)
     lon = models.FloatField(blank=True, null=True)
     added_by = models.ForeignKey(User)
-    likes = models.IntegerField(default=0)
+    found = models.IntegerField(default=0)
+    seen = models.IntegerField(default=0)
+    nope = models.IntegerField(default=0)
+    hour_found = models.IntegerField(
+        default=1,
+        validators=[MaxValueValidator(24), MinValueValidator(1)]
+     )
     # comments = models.ForeignKey(Comment, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

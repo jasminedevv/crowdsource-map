@@ -43,10 +43,9 @@ function initMarkers() {
     xhrObject.onreadystatechange = function() {
         if (xhrObject.readyState === 4) {
             if (xhrObject.status === 200 || xhrObject.status === 304) {
-                console.log(xhrObject.responseText);
                 locations = JSON.parse(xhrObject.responseText);
                 var marker, i;
-
+//console.log('various errors sometimes show up here and I have no idea why');
                 var infowindow = new google.maps.InfoWindow;
                 for (i = 0; i < locations.length; i++) {
                     var obj = locations[i];
@@ -60,7 +59,7 @@ function initMarkers() {
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                         return function() {
-                            infowindow.setContent(locations[i][0]);
+                            infowindow.setContent(/*locations[i][0]*/obj.name);
                             infowindow.open(map, marker);
                         }
                     })(marker, i));

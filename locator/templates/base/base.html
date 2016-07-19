@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'locator/css/master.css' %}"> {% endblock head %}
+</head>
+
+<body>
+    <div class="page-wrap">
+        {% block content %}{% endblock content %}
+
+
+    </div>
+    <hr>
+    <footer class="container">
+        Powered by Django.
+    </footer>
+</body>
+
+</html>

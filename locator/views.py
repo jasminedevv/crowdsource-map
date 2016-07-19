@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from models import Pokemon, MapPoint
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.core.exceptions import ObjectDoesNotExist
+
 
 # Create your views here.
-def mapPage(request):
+def map_page(request):
     if request.user.is_authenticated():
         pokedex = Pokemon.objects.all()
         response = render(request, "map.html", {'pokedex': pokedex})
@@ -12,7 +14,7 @@ def mapPage(request):
     else:
         return redirect('login/')
 
-def addMapPoint(request):
+def add_map_point(request):
     user = request.user
     if request.method == "POST" and request.is_ajax():
         name = request.POST['name']
@@ -26,36 +28,45 @@ def addMapPoint(request):
         status= "NOPE"
         return HttpResponse(status)
 
-def getAllMarkers(request):
+def get_all_markers(request):
     markers = MapPoint.objects.all()
     response = render(request, "markers.json", {'markers': markers})
     return response
 
-def register(request):
-    if request.user.is_authenticated():
-        return redirect('/map')
-    userform = UserForm(request.POST or None, prefix='user')
-    profileform = ProfileForm(request.POST or None, prefix='profile')
-    args = {}
-    if request.method == 'POST':
-        if userform.is_valid() and profileform.is_valid():
-            if userform.cleaned_data["confirm_password"] and userform.cleaned_data["password"] == userform.cleaned_data["confirm_password"]:
-                user = userform.save()
-                #Set email as username
-                user.email = userform.cleaned_data['username']
-                user.set_password(user.password)
-                user.save()
-                profile = profileform.save(commit=False)
-                profile.user = user
-                profile.save()
-                #After succesful auth, login user
-                new_user = authenticate(username=userform.cleaned_data['username'],
-                                        password=userform.cleaned_data['password'])
-                login(request, new_user)
-                return redirect('/', RequestContext(request,args))
-    args['userform'] = userform
-    args['profileform'] = profileform
-    return render_to_response('account/login.html', RequestContext(request,args))
+def pokepoint_detail(request, point_id):
+    try:
+        point = MapPoint.objects.get(id=point_id)
+        response = render(request, 'point-details.html', {'pokepoint':point})
+    except ObjectDoesNotExist:
+        point = False
+        response = render(request, 'point-details.html', {'pokepoint':point})
+    return response
+
+# def register(request):
+#     if request.user.is_authenticated():
+#         return redirect('/map')
+#     userform = UserForm(request.POST or None, prefix='user')
+#     profileform = ProfileForm(request.POST or None, prefix='profile')
+#     args = {}
+#     if request.method == 'POST':
+#         if userform.is_valid() and profileform.is_valid():
+#             if userform.cleaned_data["confirm_password"] and userform.cleaned_data["password"] == userform.cleaned_data["confirm_password"]:
+#                 user = userform.save()
+#                 #Set email as username
+#                 user.email = userform.cleaned_data['username']
+#                 user.set_password(user.password)
+#                 user.save()
+#                 profile = profileform.save(commit=False)
+#                 profile.user = user
+#                 profile.save()
+#                 #After succesful auth, login user
+#                 new_user = authenticate(username=userform.cleaned_data['username'],
+#                                         password=userform.cleaned_data['password'])
+#                 login(request, new_user)
+#                 return redirect('/', RequestContext(request,args))
+#     args['userform'] = userform
+#     args['profileform'] = profileform
+#     return render_to_response('account/login.html', RequestContext(request,args))
 
 # def createAccount(request):
 #     username = request.POST['username']
@@ -63,7 +74,7 @@ def register(request):
 #     email = request.POST['email']
 #     user = User.objects.create_user(username=username, email=email, password=password)
 
-def loginSubmit(request):
+def login_submit(request):
     failed = False
     username = request.POST['username']
     password = request.POST['password']
