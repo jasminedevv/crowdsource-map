@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^add-pokemon/', add_map_point),
     url(r'^all-markers/', get_all_markers),
-
+    # url(r'^all-markers/(?P<point_id>\d+)/', get_in_bounds);
     url(r'^pokepoint/(?P<point_id>\d+)/', pokepoint_detail),
 
     url(r'^login/', 'django.contrib.auth.views.login', {

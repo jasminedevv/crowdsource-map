@@ -12,8 +12,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'locator/css/map.css' %}">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="{% static 'locator/js/markerclusterer.js' %}"></script>
-    <script src="{% static 'locator/js/list.min.js' %}"></script>
-    <script src="{% static 'locator/js/list.fuzzysearch.min.js' %}"></script>
+    <script src="{% static 'locator/js/jets.min.js' %}"></script>
+    {# <script src="{% static 'locator/js/list.fuzzysearch.min.js' %}"></script>#}
 
     <meta charset="utf-8">
 </head>
@@ -37,9 +37,9 @@
             <p>
                 What pokemon did you see?
             </p>
-            <input class="search form-control" placeholder="Search" />
+            <input id="jetsSearch" class="search form-control" placeholder="Search" />
 
-            <div class="pokeselect list">
+            <div id="jetsContent" class="pokeselect">
                 {% for pokemon in pokedex %}
                 <label data-sort="name" for="option{{ forloop.counter }}" class="pokeoption {{pokemon.name}}">
                     <input id="option{{ forloop.counter }}" required=true type="radio" name="pokemon" value="{{pokemon.name}}"> {{pokemon.name}}
@@ -92,8 +92,6 @@
             valueNames: ['pokemon']
         };
 
-        var userList = new List('add-menu', options);
-
         //add form dynamics
         var form_height = parseInt($('.add-menu form').css('height'), 10) * -1;
         $('.add-menu').css({
@@ -126,8 +124,7 @@
             url: "all-markers",
             type: "GET",
             dataType: "json",
-        })
-        .done(function(json) {
+        }).done(function(json) {
             locations = json;
             var marker, i;
             //console.log('various errors sometimes show up here and I have no idea why');
@@ -218,6 +215,27 @@
         });
         $('.add-menu h1').show();
     });
+</script>
+<script type="text/javascript">
+// function showMarkers(filters) {
+//     var bounds = map.getBounds();
+//     $.ajax({
+//             url: "all-markers/" + bounds,
+//             type: "GET",
+//             dataType: "json",
+//         }).done(function(json){
+//
+//         }
+//   }
+
+  // google.maps.event.addListener(map, 'idle', showMarkers);
+  // instead do an on change of the filter menu and pass it an array of filters to look for
+
+  var jets = new Jets({
+  searchTag: '#jetsSearch',
+  contentTag: '#jetsContent'
+});
+
 </script>
 </body>
 

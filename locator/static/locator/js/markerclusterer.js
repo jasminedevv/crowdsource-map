@@ -136,7 +136,7 @@ function MarkerClusterer(map, opt_markers, opt_options) {
    * @type {boolean}
    * @private
    */
-  this.zoomOnClick_ = true;
+  //this.zoomOnClick_ = true;
 
   if (options['zoomOnClick'] != undefined) {
     this.zoomOnClick_ = options['zoomOnClick'];

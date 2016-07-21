@@ -43,7 +43,8 @@ class MapPoint(models.Model):
     found = models.IntegerField(default=1)
     seen = models.IntegerField(default=0)
     nope = models.IntegerField(default=0)
-    # day is a bool specifying whether the app was in day (true) or night (false) mode. This is confusing. Rename later. 
+    # accuracy_rating = models.IntegerField(default=0)
+    # day is a bool specifying whether the app was in day (true) or night (false) mode. This is confusing. Rename later.
     day = models.BooleanField(default=True)
     hour_found = models.IntegerField(
         default=1,
