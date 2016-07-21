@@ -7,7 +7,12 @@
     "icon": "{{ marker.pokemon.image }}",
     "author": "{{ marker.added_by.username }}",
     "lon": {{ marker.lat }},
-    "lat": {{ marker.lon }}
+    "lat": {{ marker.lon }},
+    "found": {{ marker.found }},
+    "seen": {{ marker.seen }},
+    "nope": {{ marker.nope }},
+    "day": {{ marker.day }},
+    "hour": {{ marker.hour_found }}
 }
   {% endfor %}
 ]
