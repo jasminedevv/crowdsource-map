@@ -18,50 +18,101 @@
 </head>
 
 <body>
+    {% csrf_token %}
     <div id="map"></div>
+    <div class="add-menu">
+        <h1 class="btn">
+          +
+        </h1>
+        <form>
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <div id="add-coordinates">
+                <p>
+                    Double click on the map to add coordinates
+                </p>
+                <input class="form-control" required=true id="new-pokemon-coords" type="text-field" name="name" value="">
+                <br>
+            </div>
+            <p>
+                What pokemon did you see?
+            </p>
+            <input class="search form-control" placeholder="Search" />
 
-    <div class="side-menu">
-        {% csrf_token %}
-        <h4>Select pokemon to add to map</h4>
-        <input class="search form-control" placeholder="Search" />
-<form class="side-frame">
-        <ul class="pokeselect list">
-            {% for pokemon in pokedex %}
-            <li>
+            <div class="pokeselect list">
+                {% for pokemon in pokedex %}
                 <label data-sort="name" for="option{{ forloop.counter }}" class="pokeoption {{pokemon.name}}">
-                    <input id="option{{ forloop.counter }}" required=true type="radio" name="pokemon" value="{{pokemon.name}}">
-                    {{pokemon.name}}
+                    <input id="option{{ forloop.counter }}" required=true type="radio" name="pokemon" value="{{pokemon.name}}"> {{pokemon.name}}
                     <img class="{{pokemon.name}}" src="media/{{ pokemon.image }}" alt="" />
                 </label>
-              </li>
-            {% endfor %}
-        </ul>
-        <br>
-        <p>
-            Double click on the map to add coordinates
-        </p>
-        <input class="form-control" required=true id="new-pokemon-coords" type="text-field" name="name" value="">
-        <br>
-        <button class="btn btn-primary" id="add-btn" type="submit" name="button">Submit</button>
-      </form>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p>Approximately what time did you find it?</p>
+                    <select class="form-control" name="hour-found">
+                        <option value=0>Midnight</option>
+                        {% for i in hours %}
+                        <option value={{ i }}>{{ i }} AM</option>
+                        {% endfor %}
+                        <option value=12>Noon</option>
+                        {% for i in hours %}
+                        <option value={{ i|add:'12' }}>{{ i }} PM</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="inline-form col-sm-6">
+                    <p>What mode was your app in?</p>
+                    <input type="radio" name="day-or-night" value="True"><span> Day mode</span>
+                    <br>
+                    <input type="radio" name="day-or-night" value="False"><span> Night mode</span>
+                </div>
+
+            </div>
+
+            <br>
+            <button class="btn btn-primary" id="add-btn" type="submit" name="button">Submit</button>
+        </form>
     </div>
     <div id="post-error" class="error-bar alert alert-danger">
+      <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
         <p>Something went wrong. Try refreshing the page and trying again. If that doesn't work, there is probably a problem with the server.</p>
     </div>
 
     <!-- Javascript -->
     <script type="text/javascript">
+        // $('.add-menu').hide();
         //alerts
         $('.alert').hide();
         $('.alert').on('click', function() {
             $('.alert').hide();
         });
         var options = {
-  valueNames: [ 'pokemon' ]
-};
+            valueNames: ['pokemon']
+        };
 
-var userList = new List('side-menu', options);
+        var userList = new List('add-menu', options);
 
+        //add form dynamics
+        var form_height = parseInt($('.add-menu form').css('height'), 10) * -1;
+        $('.add-menu').css({
+            'bottom': form_height
+        });
+        $('.add-menu').show();
+        $('.add-menu .close').on('click', function() {
+            console.log("whyyy");
+            $('.add-menu').css({
+                'bottom': form_height
+            });
+            $('.add-menu h1').show();
+        });
+        var coord_height = $('#add-coordinates').css("height");
+        $('.add-menu h1').on('click', function() {
+            $('.add-menu').css({
+                'bottom': (form_height + 20 + parseInt(coord_height))
+            })
+            $('.add-menu h1').hide();
+        })
     </script>
 
     <script src="{% static 'locator/js/initialize_map.js' %}"></script>
@@ -76,7 +127,6 @@ var userList = new List('side-menu', options);
                 dataType: "json",
             })
             .done(function(json) {
-                console.log(json);
                 locations = json;
                 var marker, i;
                 //console.log('various errors sometimes show up here and I have no idea why');
@@ -103,10 +153,6 @@ var userList = new List('side-menu', options);
                 console.log("Error: " + errorThrown);
                 console.log("Status: " + status);
                 console.dir(xhr);
-            })
-            // Code to run regardless of success or failure;
-            .always(function(xhr, status) {
-                console.log("The request is complete!");
             });
 
         function getCookie(name) {
@@ -138,25 +184,32 @@ var userList = new List('side-menu', options);
             }
         });
 
-        $(".side-frame").submit(function(e) {
+        // adds a pokemon to the map and the database on form submit
+        $(".add-menu form").submit(function(e) {
             e.preventDefault();
             latLng = $('#new-pokemon-coords').val().split(',');
             latitude = latLng[0];
             longitude = latLng[1];
             selected_pokemon = $('input[name=pokemon]:checked').val();
-            var success = false;
-            if (selected_pokemon != null && latitude != null && longitude != null) {
-                success = addPokemon(selected_pokemon, latitude, longitude);
-            }
+            day = $('input[name=day-or-night]:checked').val();
+            hour_found = parseInt($('select option:selected').val());
+            success = addPokemon(selected_pokemon, latitude, longitude, day, hour_found);
             if (success) {
+                console.log('POST success');
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(latitude, longitude),
                     map: map,
                     draggable: false,
                     name: selected_pokemon,
-                    icon: $('.' + selected_pokemon).attr('src'),
+                    icon: $('.pokeselect img.' + selected_pokemon).attr('src'),
                 });
+            } else {
+              $('#post-error').show();
             }
+            $('.add-menu').css({
+                'bottom': form_height
+            });
+            $('.add-menu h1').show();
         });
     </script>
 </body>

@@ -40,9 +40,11 @@ class MapPoint(models.Model):
     lat = models.FloatField(blank=True, null=True)
     lon = models.FloatField(blank=True, null=True)
     added_by = models.ForeignKey(User)
-    found = models.IntegerField(default=0)
+    found = models.IntegerField(default=1)
     seen = models.IntegerField(default=0)
     nope = models.IntegerField(default=0)
+    # day is a bool specifying whether the app was in day (true) or night (false) mode. This is confusing. Rename later. 
+    day = models.BooleanField(default=True)
     hour_found = models.IntegerField(
         default=1,
         validators=[MaxValueValidator(24), MinValueValidator(1)]

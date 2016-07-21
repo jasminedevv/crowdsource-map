@@ -1,11 +1,21 @@
 var map;
 
 function initMap() {
+  var pos;
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+          pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+          };
+
+          map.setCenter(pos);
+          map.setZoom(14);
+      });
+  }
+
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-            lat: 45,
-            lng: 0
-        },
+        center: pos,
         zoom: 3
     }); // end standard map initialize
 
@@ -18,22 +28,13 @@ function initMap() {
         longitude = event.latLng.lng();
         $('#new-pokemon-coords').val(latitude + ', ' + longitude);
         $('#new-pokemon-coords').attr('lat', latitude);
+          $('.add-menu').css({'bottom':'0'})
+          $('.add-menu h1').hide();
         // infowindow.open(map, new_marker);
         console.log(latitude + ', ' + longitude);
     }); //end addListener
 
     // Try HTML5 geolocation.
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-
-            map.setCenter(pos);
-            map.setZoom(14);
-        });
-    }
 }
 
 

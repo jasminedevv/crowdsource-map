@@ -8,8 +8,9 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 def map_page(request):
     if request.user.is_authenticated():
+        hours = range(1, 12)
         pokedex = Pokemon.objects.all()
-        response = render(request, "map.html", {'pokedex': pokedex})
+        response = render(request, "map.html", {'pokedex': pokedex, 'hours':hours})
         return response
     else:
         return redirect('login/')
@@ -20,7 +21,9 @@ def add_map_point(request):
         name = request.POST['name']
         longitude = float(request.POST['longitude'])
         latitude = float(request.POST['latitude'])
-        new = MapPoint(pokemon=Pokemon.objects.get(name=name), lat=latitude, lon=longitude, added_by=user)
+        hour_found = int(request.POST['hour_found'])
+        day = bool(request.POST['day'])
+        new = MapPoint(pokemon=Pokemon.objects.get(name=name), lat=latitude, lon=longitude, added_by=user, hour_found=hour_found)
         new.save()
         status = "Success!"
         return HttpResponse(status)

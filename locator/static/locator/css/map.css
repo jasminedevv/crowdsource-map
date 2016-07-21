@@ -27,15 +27,41 @@ html, body {
 }
 /* end scrollbox */
 
-.side-menu {
-    position: fixed;
+.add-menu {
+  /*padding: 100%;*/
+  transition: 0.5s;
+  z-index: 2;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+  overflow-y: scroll;
+}
+
+.add-menu h1 {
+  cursor: pointer;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  display: inline;
+  color: white;
+  font-size: 21px;
+  background-color: #349;
+  border-radius: 100%;
+}
+.add-menu h1:hover {
+  color: #349;
+  background-color: white;
+}
+
+.add-menu form {
     width: 300px;
-    left: 0;
-    top: 20vh;
-    z-index: 2;
+    margin: 0 auto;
+    margin-top: 20px;
+    max-width: 100%;
     background-color: white;
     padding: 20px;
 }
+
 .error-bar {
     transitions: 0.2s;
     margin: 0 auto;
