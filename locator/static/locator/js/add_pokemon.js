@@ -9,7 +9,7 @@ var addPokemon = function(pokemon_name, latitude, longitude, day, hour_found) {
     //     console.log(xhr.status);
     // });
     console.log(success);
-    if (success.status == 200) {
+    if (success.status = 200) {
     console.log('heeelp');
         return true;
     } else {
