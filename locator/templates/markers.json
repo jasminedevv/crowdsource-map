@@ -11,7 +11,7 @@
     "found": {{ marker.found }},
     "seen": {{ marker.seen }},
     "nope": {{ marker.nope }},
-    "day": {{ marker.day }},
+    "day": {{ marker.day|lower }},
     "hour": {{ marker.hour_found }}
 }
   {% endfor %}
