@@ -36,6 +36,10 @@ def get_all_markers(request):
     response = render(request, "markers.json", {'markers': markers})
     return response
 
+def get_in_bounds(request, bounds):
+    # parse bounds
+    bleh = "bleh"
+
 def pokepoint_detail(request, point_id):
     try:
         point = MapPoint.objects.get(id=point_id)

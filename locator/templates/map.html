@@ -21,6 +21,14 @@
 <body>
     {% csrf_token %}
     <div id="map"></div>
+    <div class="filter-menu">
+      <h3>Filter</h3>
+      <div class="filters">
+        {% for pokemon in pokedex %}
+
+        {% endfor %}
+      </div>
+    </div>
     <div class="add-menu">
         <h1 class="btn">
           +
@@ -120,6 +128,7 @@
 
     <script type="text/javascript">
     // initialize markers
+    var markers = [];
     $.ajax({
             url: "all-markers",
             type: "GET",
@@ -129,7 +138,6 @@
             var marker, i;
             //console.log('various errors sometimes show up here and I have no idea why');
             var infowindow = new google.maps.InfoWindow;
-            var markers = [];
             for (i = 0; i < locations.length; i++) {
                 var obj = locations[i];
                 marker = new google.maps.Marker({
@@ -217,20 +225,25 @@
     });
 </script>
 <script type="text/javascript">
-// function showMarkers(filters) {
-//     var bounds = map.getBounds();
-//     $.ajax({
-//             url: "all-markers/" + bounds,
-//             type: "GET",
-//             dataType: "json",
-//         }).done(function(json){
-//
-//         }
-//   }
+function showMarkers(filters) {
+    var bounds = map.getBounds();
+    bounds = bounds.replace("(", "[");
+    bounds = bounds.replace(")", "]");
+    bounds = bounds.replace(" ", "");
+    $.ajax({
+            url: "all-markers/" + bounds,
+            type: "GET",
+            dataType: "json",
+        }).done(function(json){
+          // var bounds =  map.getBounds();
+          if (bounds != null) {
+            console.log("deleted markers");
+            deleteMarkers();
+          }
+        });
+  }
 
-  // google.maps.event.addListener(map, 'idle', showMarkers);
-  // instead do an on change of the filter menu and pass it an array of filters to look for
-
+// the auto search thing
   var jets = new Jets({
   searchTag: '#jetsSearch',
   contentTag: '#jetsContent'

@@ -34,5 +34,15 @@ function initMap() {
         console.log(latitude + ', ' + longitude);
     }); //end addListener
 
+    google.maps.event.addListener(map, 'idle', showMarkers);
+    // instead do an on change of the filter menu and pass it an array of filters to look for
+
     // Try HTML5 geolocation.
+}
+
+function deleteMarkers() {
+  for (var i = 0; i < markers.length; i++ ) {
+    markers[i].setMap(null);
+  }
+  markers.length = 0;
 }
