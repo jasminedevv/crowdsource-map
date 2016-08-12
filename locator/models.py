@@ -11,7 +11,7 @@ class Pokemon(models.Model):
     name = models.CharField(max_length=255, blank=False, unique=True)
     image = models.ImageField(upload_to='pokemon')
     pokedex_id = models.IntegerField(unique=True, blank=True)
-    evolution = models.PositiveIntegerField()
+    # evolution = models.PositiveIntegerField()
     def __str__(self):
         return self.name
 

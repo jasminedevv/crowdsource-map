@@ -6,6 +6,13 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
+
+def redirect_to_map(request):
+    if request.user.is_authenticated():
+        return redirect('map/')
+    else:
+        return redirect('login/')
+
 def map_page(request):
     if request.user.is_authenticated():
         hours = range(1, 12)
@@ -37,13 +44,36 @@ def get_all_markers(request):
     return response
 
 def pokepoint_detail(request, point_id):
+    print(point_id)
+    if request.user.is_authenticated():
+        try:
+            point = MapPoint.objects.get(id=point_id)
+            response = render(request, 'point-details.html', {'pokepoint':point})
+        except ObjectDoesNotExist:
+            point = False
+            response = render(request, 'point-details.html', {'pokepoint':point})
+        return response
+    else:
+        return redirect('login/')
+
+def update_point(request, sighting, point_id):
+    str(sighting)
     try:
         point = MapPoint.objects.get(id=point_id)
-        response = render(request, 'point-details.html', {'pokepoint':point})
     except ObjectDoesNotExist:
-        point = False
-        response = render(request, 'point-details.html', {'pokepoint':point})
-    return response
+        return HttpResponse(status=404)
+    if sighting == 'found':
+        point.found += 1
+    elif sighting == "seen":
+        point.seen += 1
+    elif sighting == 'nope':
+        point.nope += 1
+    else:
+        return HttpResponse(status=400)
+    point.save()
+    return HttpResponse(status=200)
+
+
 
 # def register(request):
 #     if request.user.is_authenticated():

@@ -8,6 +8,33 @@ html, body {
     height: 100%;
 }
 
+#loading {
+    background-color: #fff;
+    padding-top: 20vh;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    position: fixed;
+}
+
+#loading p {
+    text-align: center;
+    display: block;
+    min-height: 209px;
+    min-width: 200px;
+}
+
+
+.btn-custom {
+	background-color: #349;
+  color: white;
+}
+
+.btn-mint {
+	background-color: #98ff98;
+  color: #477244;
+}
+
 /* pokemon scrollbox */
 .pokeselect {
     height: 100px;
@@ -64,6 +91,9 @@ html, body {
     padding: 20px;
     overflow-y: scroll;
     overflow: visible;
+    -webkit-box-shadow: 1px 6px 44px -10px rgba(0,0,0,1);
+    -moz-box-shadow: 1px 6px 44px -10px rgba(0,0,0,1);
+    box-shadow: 1px 6px 44px -10px rgba(0,0,0,1);
 }
 
 .error-bar {

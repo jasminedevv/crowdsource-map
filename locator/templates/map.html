@@ -19,16 +19,25 @@
 </head>
 
 <body>
+
+  <div id="loading">
+    <p><img src="http://a.top4top.net/p_1990j031.gif" alt="Loading"></p>
+    <p>
+      loading...
+    </p>
+  </div>
     {% csrf_token %}
     <div id="map"></div>
-    <div class="filter-menu">
+    <!--
+    {# <div class="filter-menu">
       <h3>Filter</h3>
       <div class="filters">
         {% for pokemon in pokedex %}
 
         {% endfor %}
       </div>
-    </div>
+    </div>#}
+    --->
     <div class="add-menu">
         <h1 class="btn">
           +
@@ -80,7 +89,7 @@
             </div>
 
             <br>
-            <button class="btn btn-primary" id="add-btn" type="submit" name="button">Submit</button>
+            <button class="btn btn-custom" id="add-btn" type="submit" name="button">Submit</button>
         </form>
     </div>
     <div id="post-error" class="error-bar alert alert-danger">
@@ -112,6 +121,7 @@
                 'bottom': form_height
             });
             $('.add-menu h1').show();
+            $(".add-menu form").reset();
         });
         var coord_height = $('#add-coordinates').css("height");
         $('.add-menu h1').on('click', function() {
@@ -130,7 +140,7 @@
     // initialize markers
     var markers = [];
     $.ajax({
-            url: "all-markers",
+            url: "/all-markers",
             type: "GET",
             dataType: "json",
         }).done(function(json) {
@@ -146,20 +156,26 @@
                     draggable: false,
                     name: obj.name,
                     icon: "media/" + obj.icon,
+                    url: "pokepoint/" + obj.id,
                 });
+                google.maps.event.addListener(marker, 'click', function() {
+                        window.open(this.url);
+                    });
+                    markers.push(marker);
 
-                google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                    return function() {
-                        infowindow.setContent(locations[i][0]);
-                        infowindow.open(map, marker);
-                    }
-                })(marker, i));
-                markers.push(marker);
+                // google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                //     return function() {
+                //         infowindow.setContent(locations[i][0]);
+                //         infowindow.open(map, marker);
+                //     }
+                // })(marker, i));
+                // markers.push(marker);
             }
             var options = {
                 imagePath: '{% static 'locator/js/images/m' %}'
             };
             var markerCluster = new MarkerClusterer(map, markers, options);
+
         })
         .fail(function(xhr, status, errorThrown) {
             console.log("Error: " + errorThrown);
@@ -225,23 +241,23 @@
     });
 </script>
 <script type="text/javascript">
-function showMarkers(filters) {
-    var bounds = map.getBounds();
-    bounds = bounds.replace("(", "[");
-    bounds = bounds.replace(")", "]");
-    bounds = bounds.replace(" ", "");
-    $.ajax({
-            url: "all-markers/" + bounds,
-            type: "GET",
-            dataType: "json",
-        }).done(function(json){
-          // var bounds =  map.getBounds();
-          if (bounds != null) {
-            console.log("deleted markers");
-            deleteMarkers();
-          }
-        });
-  }
+// function showMarkers(filters) {
+//     var bounds = map.getBounds();
+//     bounds = bounds.replace("(", "[");
+//     bounds = bounds.replace(")", "]");
+//     bounds = bounds.replace(" ", "");
+//     $.ajax({
+//             url: "/all-markers/" + bounds,
+//             type: "GET",
+//             dataType: "json",
+//         }).done(function(json){
+//           // var bounds =  map.getBounds();
+//           if (bounds != null) {
+//             console.log("deleted markers");
+//             deleteMarkers();
+//           }
+//         });
+//   }
 
 // the auto search thing
   var jets = new Jets({
@@ -249,6 +265,13 @@ function showMarkers(filters) {
   contentTag: '#jetsContent'
 });
 
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    setTimeout(function(){
+      $('#loading').fadeOut();
+}, 3000);
+  })
 </script>
 </body>
 

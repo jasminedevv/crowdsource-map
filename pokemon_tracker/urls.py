@@ -29,12 +29,14 @@ urlpatterns = [
     url(r'^add-pokemon/', add_map_point),
     url(r'^all-markers/', get_all_markers),
     url(r'^pokepoint/(?P<point_id>\d+)/', pokepoint_detail),
+    url(r'^update-point/(?P<sighting>\b(found|seen|nope)\b)/(?P<point_id>\d+)/', update_point),
 
     url(r'^login/', 'django.contrib.auth.views.login', {
     'template_name': 'login.html'
 }),
     url(r'^login/submit/', login_submit),
-    url(r'^map', map_page)
+    url(r'^map', map_page),
+    # url(r'^$', redirect_to_map),
 ]
 
 if settings.DEBUG is True:

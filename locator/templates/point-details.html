@@ -1,43 +1,122 @@
+{% extends "base/base.html" %} {% load staticfiles %} {% block head %} {{ block.super }}
 
-{% extends "base/base.html" %}
-{% load staticfiles %}
-{% block head %}
-{{ block.super }}
-  <title>Error</title>
+<title>Detail</title>
+<link rel="shortcut icon" type="image/png" href="/media/{{ pokepoint.pokemon.image }}" />
 
-  <style>
-      html,
-      body {
-          height: 100%;
-          margin: 0;
-          padding: 0;
-      }
+<style>
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
 
-      .card {
-          max-width: 500px;
-          margin: 0 auto;
-          text-align: center;
-          margin-top: 20vh;
-      }
-  </style>
-  {% endblock %}
+    .title {
+        color: white;
+        margin-bottom: 30px;
+        -webkit-text-stroke: 1px grey;
+        text-stroke: 0.5px white;
+    }
 
-  {% block content %}
+    .panel-heading {
+        background-color: #98ff98 !important;
+        border: #477244;
+    }
+
+    .panel-heading h2 {
+        color: #477244;
+    }
+</style>
+{% endblock %} {% block content %}
 <div class="container">
-  {% if not pokepoint %}
-  <br><br><br>
-  <h1 class='red'>Oh no!</h1>
-  <p>
-    I don't know where that map point went. It probably never existed.
-  </p>
-  {% else %}
-  <h1>Details</h1>
-      <h4>Pokemon: {{ pokepoint.pokemon.name }} <img src="/media/{{ pokepoint.pokemon.image }}" alt="" /></h4>
-      <h4>Author: {{ pokepoint.added_by }}</h4>
-      <h4>Found: {{ pokepoint.found }} times</h4>
-      <h4>Seen: {{ pokepoint.seen }} time</h4>
-      <h4>Nowhere in sight: {{ pokepoint_nope }}</h4>
-  {% endif %}
+    {% if not pokepoint %}
+    <br>
+    <br>
+    <br>
+    <div class="card">
+        <h1 class='red'>Oh no!</h1>
+        <p>
+            I don't know where that map point went. It was either deleted or never existed in the first place!
+        </p>
+    </div>
+    {% else %}
+
+    <h1 class="text-center title">Pokepoint #{{ pokepoint.id }}</h1>
+
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Details</h2>
+            </div>
+            <div class="panel-body">
+                <h4>Pokemon: <span class="pokename">{{ pokepoint.pokemon.name }}</span> <img src="/media/{{ pokepoint.pokemon.image }}" alt="" /></h4>
+                <h4>Author: <span class="author">{{ pokepoint.added_by }}</span></h4>
+                <h4>Found: <span class="found">{{ pokepoint.found }}</span></h4>
+                <h4>Seen: <span class="seen">{{ pokepoint.seen }}</span></h4>
+                <h4>Nowhere in sight: <span class="nope">{{ pokepoint.nope }}</span></h4>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <!--- add data menu --->
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Add Data</h2>
+            </div>
+            <div class="panel-body">
+                <br>
+                <button class="btn btn-primary found-btn" type="button" value="update" name="button">I found one there too!</button>
+                <br>
+                <br>
+                <button class="btn btn-primary seen-btn" type="button" name="button">There was one nearby</button>
+                <br>
+                <br>
+                <button class="btn btn-primary nope-btn" type="button" name="button">Nowhere in sight</button>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-  {% endblock %}
+<script type="text/javascript">
+
+var point_id = {{ pokepoint.id }};
+  $(".found-btn").on("click", function(){
+    var sighting = "found";
+    $.ajax({
+        url: "/update-point/" + sighting + "/" + point_id,
+    }).done(function(response) {
+        var new_val = parseInt($("." + sighting).text()) + 1;
+        $("." + sighting).text(new_val);
+    });
+  });
+
+  $(".seen-btn").on("click", function(){
+    var sighting = "seen";
+    $.ajax({
+        url: "/update-point/" + sighting + "/" + point_id,
+    }).done(function(response) {
+        var new_val = parseInt($("." + sighting).text()) + 1;
+        $("." + sighting).text(new_val);
+    });
+  });
+
+  $(".nope-btn").on("click", function(){
+    var sighting = "nope";
+    $.ajax({
+        url: "/update-point/" + sighting + "/" + point_id,
+    }).done(function(response) {
+        var new_val = parseInt($("." + sighting).text()) + 1;
+        $("." + sighting).text(new_val);
+    });
+  });
+
+</script>
+{% endif %}
+</div>
+
+{% endblock %}
