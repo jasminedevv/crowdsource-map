@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'PIL',
     'locator',
+    'sslserver'
     # 'api_view',
     # 'rest_framework',
 ]

@@ -10,7 +10,7 @@ icons = os.listdir('media/icons/')
 
 for pokemon in icons:
     pokedex_id = re.sub('.png', '', pokemon)
-    if not '.' in pokedex_id or '-' not in pokedex_id:
+    if not '.' in pokedex_id or not '-' in pokedex_id:
         print(pokedex_id)
         url = "http://pokeapi.co/api/v2/pokemon/" + pokedex_id
         print(url)
@@ -21,7 +21,3 @@ for pokemon in icons:
 
         new = Pokemon(name=name, image=imagepath, pokedex_id=pokedex_id)
         new.save()
-    # print(data.name)
-
-# hit api with id
-# get name
