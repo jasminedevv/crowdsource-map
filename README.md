@@ -13,6 +13,6 @@ A nest finder designed for Pokemon Go as it was during the final days of the bet
 1. Create and run a virtualenv.
 2. ```pip install -r requirements.txt```
 3. make migrations locator and migrate
-4. Follow the comments in get_data.py to load pokemon into the database. The easiest way to do this is to ```import get_data.py``` from a django shell: ```python manage.py shell```. The script will load all 721 pokemon if you let it so make sure you want that. You'll also have to move the icons folder to /media so the program can find it.
+4. download pokemon icons from http://veekun.com/dex/downloads (I recommend sprites used in the Pokémon screen (no animations) but any will work) and put them under /media/icons. Next ```import get_data.py``` from a django shell: ```python manage.py shell```. The script will load whatever pokemon are in the icon folder so you /can/ load all 720 of them if you want but you'll only need gen 1 for Pokemon Go.
 5. createsuperuser
 6. go to ```localhost:8000/map``` and log in
