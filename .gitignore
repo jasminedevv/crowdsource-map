@@ -2,6 +2,5 @@
 db.*
 /media/
 /env/
-*/migrations/
 todo.md
 /load_pokedex/
