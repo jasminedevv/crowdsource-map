@@ -1,3 +1,5 @@
+![Pokemon map. Shows a google map of San Francisco, a modal popping up in the middle with "scy" typed into a searchbox and "scyther" selected.](http://jasminehumbert.com/img/poketracker.png)
+
 # Crowdsource Map
 A nest finder designed for Pokemon Go as it was during the final days of the beta. It's mostly obsolete by now but feel free to fork if you see any use for it. I never got around to implementing an essential feature: filtering markers. Nonetheless it was a fun project. Adapting it to a similar purpose should be as easy as changing some names around and adding different icons to the database.
 
